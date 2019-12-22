@@ -1,0 +1,20 @@
+server:
+  port: 7001
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: after_route
+        uri: http://example.org
+        predicates:
+#        - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+#        - Before=2017-01-20T17:42:47.789-07:00[America/Denver]
+#        - Between=2017-01-20T17:42:47.789-07:00[America/Denver],2017-01-21T17:42:47.789-07:00[America/Denver]
+#        - Cookie=chocolate,1{1}
+#        - Header=X-Request-Id,\d+
+#        - Host=**.somehost.org,**.anotherhost.org
+#        - Method=GET
+#        - Path=/foo/{segment},/bar/{segment}
+#        - Query=test,\d+
+#        - RemoteAddr=192.168.1.1/24
+        - Test=123,222
