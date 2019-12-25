@@ -3,18 +3,42 @@ server:
 spring:
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true #是否开启与服务发现组件进行结合
+      #路由配置
       routes:
       - id: after_route
         uri: http://example.org
         predicates:
-#        - After=2017-01-20T17:42:47.789-07:00[America/Denver]
-#        - Before=2017-01-20T17:42:47.789-07:00[America/Denver]
-#        - Between=2017-01-20T17:42:47.789-07:00[America/Denver],2017-01-21T17:42:47.789-07:00[America/Denver]
-#        - Cookie=chocolate,1{1}
-#        - Header=X-Request-Id,\d+
-#        - Host=**.somehost.org,**.anotherhost.org
-#        - Method=GET
-#        - Path=/foo/{segment},/bar/{segment}
-#        - Query=test,\d+
-#        - RemoteAddr=192.168.1.1/24
+        - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+        - Before=2017-01-20T17:42:47.789-07:00[America/Denver]
+        - Between=2017-01-20T17:42:47.789-07:00[America/Denver],2017-01-21T17:42:47.789-07:00[America/Denver]
+        - Cookie=chocolate,1{1}
+        - Header=X-Request-Id,\d+
+        - Host=**.somehost.org,**.anotherhost.org
+        - Method=GET
+        - Path=/foo/{segment},/bar/{segment}
+        - Query=test,\d+
+        - RemoteAddr=192.168.1.1/24
+        - Test=123,333
+      - id: test_route
+        uri: https://www.baidu.com
+        predicates:
         - Test=123,222
+        #去除前缀
+      - id: test2_route
+        uri: https://www.haixue.com
+        predicates:
+        - Path=/haixue/**
+        filters:
+        - StripPrefix=1
+        #权重路由
+      - id: test3_route
+        uri: http://localhost:8081
+        predicates:
+        - Weight=group2,4
+      - id: test4_route
+        uri: http://localhost:8080
+        predicates:
+        - Weight=group2,6

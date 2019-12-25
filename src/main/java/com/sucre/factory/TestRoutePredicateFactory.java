@@ -9,6 +9,7 @@ import org.springframework.web.server.ServerWebExchange;
 import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 @Component
@@ -16,7 +17,7 @@ import java.util.function.Predicate;
 public class TestRoutePredicateFactory extends AbstractRoutePredicateFactory<TestRoutePredicateFactory.Config> {
 
     public static final String NAME_KEY = "name";
-    public static final String REGEXP_KEY = "regexp";
+    public static final String REGEXP_KEY = "value";
 
     public TestRoutePredicateFactory(){
         super(Config.class);
@@ -27,7 +28,7 @@ public class TestRoutePredicateFactory extends AbstractRoutePredicateFactory<Tes
     public Predicate<ServerWebExchange> apply(Config config) {
         return exchange -> {
             List<String> strings = exchange.getRequest().getQueryParams().get(config.name);
-            return true;
+            return Objects.nonNull(strings) && strings.contains(config.value);
         };
     }
 
@@ -42,7 +43,7 @@ public class TestRoutePredicateFactory extends AbstractRoutePredicateFactory<Tes
         @NotEmpty
         private String name;
         @NotEmpty
-        private String regexp;
+        private String value;
 
         public String getName() {
             return name;
@@ -53,12 +54,12 @@ public class TestRoutePredicateFactory extends AbstractRoutePredicateFactory<Tes
             return this;
         }
 
-        public String getRegexp() {
-            return regexp;
+        public String getValue() {
+            return value;
         }
 
-        public TestRoutePredicateFactory.Config setRegexp(String regexp) {
-            this.regexp = regexp;
+        public TestRoutePredicateFactory.Config setValue(String value) {
+            this.value = value;
             return this;
         }
     }
